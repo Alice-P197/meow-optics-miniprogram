@@ -1,0 +1,75 @@
+<navigation-bar title="{{title}}" back="{{true}}" color="#15244e" background="#eef3fc"></navigation-bar>
+<scroll-view class="body" scroll-y enhanced show-scrollbar="{{false}}">
+<view class="page" wx:if="{{entry}}">
+
+  <!-- 词条头图 -->
+  <view class="top-hero" style="background:{{bg}}">
+    <view class="th-orb"></view>
+    <view class="th-ribbon"></view>
+    <view class="th-tag">{{tag}} · {{catName}}</view>
+    <view class="th-title">{{title}}</view>
+  </view>
+
+  <!-- 正文 -->
+  <view class="content">
+    <block wx:for="{{blocks}}" wx:key="index" wx:for-item="b">
+      <block wx:if="{{b.t === 'p'}}"><view class="b-p">{{b.x}}</view></block>
+      <block wx:if="{{b.t === 'h3'}}"><view class="b-h3">{{b.x}}</view></block>
+      <block wx:if="{{b.t === 'h2'}}"><view class="b-h2">{{b.x}}</view></block>
+      <block wx:if="{{b.t === 'formula'}}">
+        <view class="b-f math"><text class="b-f-eq">{{b.x}}</text></view>
+      </block>
+      <block wx:if="{{b.t === 'note'}}">
+        <view class="b-note">
+          <view class="b-note-bar"></view>
+          <text>{{b.x}}</text>
+        </view>
+      </block>
+      <block wx:if="{{b.t === 'code'}}">
+        <view class="b-code">
+          <view class="b-code-head">
+            <view class="b-code-dot b-code-dot-r"></view>
+            <view class="b-code-dot b-code-dot-y"></view>
+            <view class="b-code-dot b-code-dot-g"></view>
+            <view class="b-code-lang">{{b.lang || 'CODE'}}</view>
+            <view class="b-code-copy press" wx:if="{{b.x}}" hover-class="h-press-lite" data-text="{{b.x}}" bindtap="copyCode">复制</view>
+          </view>
+          <scroll-view class="b-code-body" scroll-x enhanced show-scrollbar="{{false}}">
+            <text class="b-code-pre" user-select="{{true}}" space="nbsp">{{b.x}}</text>
+          </scroll-view>
+        </view>
+      </block>
+      <block wx:if="{{b.t === 'list'}}">
+        <view class="b-list">
+          <view wx:for="{{b.x}}" wx:key="index" wx:for-item="li" class="b-li">
+            <view class="b-li-dot"></view>
+            <view class="b-li-txt">{{li}}</view>
+          </view>
+        </view>
+      </block>
+      <block wx:if="{{b.t === 'table'}}">
+        <view class="b-tbl-wrap">
+          <view class="b-tbl">
+            <view class="b-tr b-th" wx:if="{{b.head}}">
+              <view
+                wx:for="{{b.head}}" wx:for-item="h" wx:for-index="ci" wx:key="index"
+                class="b-td {{b.w ? 'fix' : ''}}"
+                style="{{b.w ? 'width:' + b.w[ci] : ''}}"
+              >{{h}}</view>
+            </view>
+            <view wx:for="{{b.rows}}" wx:for-item="r" wx:for-index="ri" wx:key="index" class="b-tr {{ri % 2 === 1 ? 'alt' : ''}}">
+              <view
+                wx:for="{{r}}" wx:for-item="cell" wx:for-index="ci2" wx:key="index"
+                class="b-td {{b.w ? 'fix' : ''}}"
+                style="{{b.w ? 'width:' + b.w[ci2] : ''}}"
+              >{{cell}}</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </block>
+  </view>
+
+  <view class="foot">OPTILAB · 光学手册</view>
+</view>
+</scroll-view>

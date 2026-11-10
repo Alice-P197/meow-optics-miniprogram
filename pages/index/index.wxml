@@ -1,0 +1,178 @@
+<navigation-bar title="光学工坊" back="{{false}}" color="#15244e" background="#eef3fc"></navigation-bar>
+<scroll-view id="page-scroll" class="body" scroll-y enhanced show-scrollbar="{{false}}" bindscroll="onScrollTop">
+<view class="page">
+
+  <!-- ============ Hero ============ -->
+  <view class="rbox go" id="sec-hero">
+    <view class="hero rv" style="--d:0ms">
+      <view class="orb orb-a"></view>
+      <view class="orb orb-b"></view>
+      <view class="ring"></view>
+
+      <view class="hero-top">
+        <view class="hero-date">{{date}}</view>
+        <view class="hero-badge">OPTILAB</view>
+      </view>
+
+      <view class="hero-title">{{greet}}，光学工程师</view>
+      <view class="hero-sub">公式速算 · 手册速查 · 数据工具在手</view>
+
+      <view class="hero-stats">
+        <view class="stat">
+          <text class="stat-num">{{calcTotal}}</text>
+          <text class="stat-label">交互计算</text>
+        </view>
+        <view class="stat-div"></view>
+        <view class="stat">
+          <text class="stat-num">{{entryTotal}}</text>
+          <text class="stat-label">手册词条</text>
+        </view>
+        <view class="stat-div"></view>
+        <view class="stat">
+          <text class="stat-num">{{cats.length}}</text>
+          <text class="stat-label">知识分类</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 最近使用 ============ -->
+  <view class="rbox go" wx:if="{{recent.length}}" id="sec-recent">
+    <view class="sec-head rv" style="--d:80ms">
+      <view class="sec-title">最近使用</view>
+    </view>
+    <scroll-view class="hstrip" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="hstrip-inner">
+        <view
+          wx:for="{{recent}}" wx:key="id"
+          class="recent-card press rv"
+          style="--d:{{index * 50 + 120}}ms"
+          hover-class="h-press"
+          data-id="{{item.id}}"
+          bindtap="openCalc"
+        >
+          <view class="tile tile-sm" style="background:{{item.grad}}">{{item.symbol}}</view>
+          <view class="recent-mid">
+            <view class="recent-name">{{item.name}}</view>
+            <view class="recent-time">{{item.time}}</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ============ 交互计算 ============ -->
+  <view class="rbox {{shown.calc ? 'go' : ''}}" id="sec-calc">
+    <view class="sec-head rv" style="--d:0ms">
+      <view class="sec-title">交互计算</view>
+      <view class="sec-more press" hover-class="h-press-lite" catchtap="openHandbook">全部手册 ›</view>
+    </view>
+
+    <view class="filters rv" style="--d:40ms">
+      <view
+        wx:for="{{calcFilters}}" wx:key="id"
+        class="chip {{calcFilter === item.id ? 'chip-on' : ''}} press"
+        hover-class="h-press-lite"
+        data-id="{{item.id}}"
+        bindtap="setFilter"
+      >{{item.label}}</view>
+    </view>
+
+    <view class="calc-grid">
+      <view
+        wx:for="{{calcList}}" wx:key="id"
+        class="calc-card press rv"
+        style="--d:{{index * 45 + 80}}ms"
+        hover-class="h-press"
+        data-id="{{item.id}}"
+        bindtap="openCalc"
+      >
+        <view class="calc-top">
+          <view class="tile tile-calc" style="background:{{item.grad}}">{{item.symbol}}</view>
+          <view class="pill">{{item.catName}}</view>
+        </view>
+        <view class="calc-name">{{item.name}}</view>
+        <view class="calc-sub">{{item.sub}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 光学手册 ============ -->
+  <view class="rbox {{shown.book ? 'go' : ''}}" id="sec-book">
+    <view class="sec-head rv" style="--d:0ms">
+      <view class="sec-title">光学手册</view>
+      <view class="sec-more press" hover-class="h-press-lite" bindtap="openHandbook">查看全部 ›</view>
+    </view>
+
+    <!-- 精选词条横滑 -->
+    <scroll-view class="hstrip" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="hstrip-inner">
+        <view
+          wx:for="{{hot}}" wx:key="key"
+          class="hot-card press rv"
+          style="--d:{{index * 60 + 60}}ms"
+          hover-class="h-press"
+          data-key="{{item.key}}"
+          bindtap="openEntry"
+        >
+          <view class="hot-top">
+            <text class="pill" style="color:{{item.catColor}};background:{{item.catColor}}1a;">{{item.tag}}</text>
+            <text class="hot-cat">{{item.catName}}</text>
+          </view>
+          <view class="hot-title">{{item.title}}</view>
+          <view class="hot-summary">{{item.summary}}</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 分类目录 -->
+    <view class="cat-list">
+      <view
+        wx:for="{{cats}}" wx:key="id"
+        class="cat-card press rv"
+        style="--d:{{index * 60 + 60}}ms"
+        hover-class="h-press"
+        data-id="{{item.id}}"
+        bindtap="openCat"
+      >
+        <view class="tile" style="background:{{item.bg}}">{{item.icon}}</view>
+        <view class="cat-mid">
+          <view class="cat-name">{{item.name}}</view>
+          <view class="cat-desc">{{item.count}} 篇 · {{item.desc}}</view>
+        </view>
+        <view class="cat-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot a-up" style="--d:100ms">OPTILAB · 掌上光学工具箱</view>
+</view>
+</scroll-view>
+
+<!-- 悬浮小猫助手（可拖动） + 自动问候气泡 -->
+<view class="cat-wrap {{dragging ? 'dragging' : ''}} {{bubbleDown ? 'down' : ''}}" style="transform: translate({{catX}}px, {{catY}}px)">
+  <!-- 小猫本体（拖动 / 点击展开对话） -->
+  <view class="cat-fab {{showAssistant ? 'paused' : ''}}"
+    bindtouchstart="onCatStart"
+    catchtouchmove="onCatMove"
+    bindtouchend="onCatEnd"
+    bindtouchcancel="onCatEnd"
+  >
+    <view class="cat-fab-shadow"></view>
+    <view class="cat-fab-body">
+      <image class="cat-img" src="/assets/cat-assistant.png" mode="aspectFill" />
+    </view>
+  </view>
+
+  <!-- 气泡（自动弹出 / 点击关闭） -->
+  <view class="cat-bubble {{showBubble ? 'on' : ''}}" wx:if="{{showBubble}}">
+    <view class="cat-bubble-close" catchtap="onBubbleClose">✕</view>
+    <view class="cat-bubble-hi">喵～</view>
+    <view class="cat-bubble-text">我是小喵助手 🐾 有问题可以随时问我，还能帮我移动位置哦！</view>
+    <view class="cat-bubble-go" catchtap="openAssistant">和我聊聊 ›</view>
+    <view class="cat-bubble-tail"></view>
+  </view>
+</view>
+
+<!-- 顶部下滑抽屉：AI 智能客服 -->
+<assistant-drawer show="{{showAssistant}}" bindclose="onCloseAssistant"></assistant-drawer>

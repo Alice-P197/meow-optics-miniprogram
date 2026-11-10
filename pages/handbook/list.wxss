@@ -1,0 +1,208 @@
+/* ========== 手册目录页 ========== */
+.page {
+  padding: 8rpx 24rpx calc(40rpx + env(safe-area-inset-bottom));
+}
+
+/* 搜索 */
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 22rpx;
+  padding: 0 24rpx;
+  height: 84rpx;
+  box-shadow: var(--shadow-sm);
+  margin-top: 8rpx;
+  transition: box-shadow 0.25s ease;
+}
+.search-box:focus-within {
+  box-shadow: 0 0 0 4rpx rgba(61, 99, 255, 0.12), var(--shadow-sm);
+}
+.search-ico {
+  width: 28rpx;
+  height: 28rpx;
+  border: 4rpx solid #a6b0cd;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 16rpx;
+  flex: none;
+}
+.search-ico::after {
+  content: '';
+  position: absolute;
+  width: 4rpx;
+  height: 14rpx;
+  background: #a6b0cd;
+  border-radius: 4rpx;
+  transform: rotate(-45deg);
+  right: -8rpx;
+  bottom: -6rpx;
+}
+.search-input {
+  flex: 1;
+  font-size: 27rpx;
+  color: var(--ink);
+}
+.search-ph {
+  color: var(--ink3);
+}
+.search-clear {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: #edf0f9;
+  color: var(--ink3);
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+}
+
+/* 分类横滑 */
+.cat-scroll {
+  width: calc(100% + 48rpx);
+  margin: 20rpx 0 6rpx -24rpx;
+}
+.cat-row {
+  display: inline-flex;
+  padding: 0 24rpx 10rpx;
+}
+.cat-chip {
+  flex: none;
+  font-size: 24rpx;
+  color: var(--ink2);
+  background: #fff;
+  padding: 12rpx 28rpx;
+  border-radius: 999rpx;
+  margin-right: 16rpx;
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--line);
+  transition: all 0.22s ease;
+}
+.cat-chip.on {
+  background: var(--grad);
+  color: #fff;
+  font-weight: 700;
+  border-color: transparent;
+  box-shadow: 0 6rpx 16rpx rgba(61, 99, 255, 0.3);
+}
+
+/* 分组 */
+.group {
+  margin-top: 26rpx;
+}
+.group-head {
+  display: flex;
+  align-items: center;
+  margin: 0 6rpx 20rpx;
+}
+.gh-tile {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 20rpx;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, 'Times New Roman', serif;
+  box-shadow: 0 8rpx 18rpx rgba(40, 70, 170, 0.22);
+}
+.gh-mid {
+  margin-left: 18rpx;
+}
+.gh-name {
+  font-size: 31rpx;
+  font-weight: 800;
+}
+.gh-count {
+  font-size: 21rpx;
+  color: var(--ink3);
+}
+
+/* 词条卡片 */
+.entry-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx 26rpx;
+  margin-bottom: 18rpx;
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.5s ease both;
+  animation-delay: var(--d, 0ms);
+  position: relative;
+  overflow: hidden;
+}
+.entry-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6rpx;
+  background: linear-gradient(180deg, #4a7cff, #38c9ad);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.entry-card:active::before {
+  opacity: 1;
+}
+.ec-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ec-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  flex: 1;
+  margin-right: 12rpx;
+}
+.ec-arrow {
+  color: #c3cbdf;
+  font-size: 36rpx;
+  font-family: Georgia, serif;
+}
+.ec-sum {
+  margin-top: 8rpx;
+  font-size: 23rpx;
+  color: var(--ink3);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.6;
+}
+.ec-tag-row {
+  margin-top: 16rpx;
+  display: flex;
+}
+.ec-tag {
+  font-size: 20rpx;
+  color: var(--brand);
+  background: rgba(61, 99, 255, 0.09);
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+
+/* 空状态 */
+.empty {
+  padding: 120rpx 0 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.empty-orb {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(61, 99, 255, 0.16), rgba(61, 99, 255, 0.05) 65%);
+  animation: softPulse 2.2s ease-in-out infinite;
+}
+.empty-txt {
+  margin-top: 24rpx;
+  color: var(--ink3);
+  font-size: 25rpx;
+}

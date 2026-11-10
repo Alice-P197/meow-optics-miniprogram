@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "navigation-bar": "/components/navigation-bar/navigation-bar",
+    "assistant-drawer": "/components/assistant-drawer/assistant-drawer"
+  }
+}

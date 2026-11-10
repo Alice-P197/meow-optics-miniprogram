@@ -1,0 +1,145 @@
+<navigation-bar title="{{name}}" back="{{true}}" color="#15244e" background="#eef3fc"></navigation-bar>
+<scroll-view class="body" scroll-y enhanced show-scrollbar="{{false}}">
+<view class="page" wx:if="{{calc}}">
+
+  <!-- 头部：说明 + 公式 -->
+  <view class="head-card">
+    <view class="hc-top">
+      <view class="tile hc-tile" style="background:{{grad}}">{{symbol}}</view>
+      <view class="hc-mid">
+        <view class="hc-name">{{name}}</view>
+        <view class="hc-cat">{{catName}} · {{sub}}</view>
+      </view>
+    </view>
+    <view class="hc-desc">{{desc}}</view>
+
+    <view class="formula-card">
+      <view class="f-title">核心公式</view>
+      <view wx:for="{{formulas}}" wx:key="index" class="f-line math">{{item}}</view>
+      <view class="f-note" wx:if="{{formulaNote}}">{{formulaNote}}</view>
+    </view>
+  </view>
+
+  <!-- 常用预设 -->
+  <view class="sec-head" wx:if="{{presets.length}}">
+    <view class="sec-title">常用参数</view>
+  </view>
+  <view class="chips preset-chips" wx:if="{{presets.length}}">
+    <view
+      wx:for="{{presets}}" wx:key="index"
+      class="chip press"
+      hover-class="h-press-lite"
+      data-index="{{item.index}}"
+      bindtap="presetTap"
+    >{{item.label}}</view>
+  </view>
+
+  <!-- 输入参数 -->
+  <view class="sec-head">
+    <view class="sec-title">输入参数</view>
+    <view class="sec-more press" hover-class="h-press-lite" bindtap="reset">重置默认</view>
+  </view>
+  <view class="card inputs">
+    <view wx:for="{{fields}}" wx:key="key" class="field">
+      <view class="field-head">
+        <text class="field-label">{{item.label}}</text>
+
+        <!-- 符号段（可正负） -->
+        <view class="sign-seg" wx:if="{{item.signed}}">
+          <view
+            class="sign-btn {{!item.neg ? 'on' : ''}}"
+            hover-class="h-press-lite"
+            data-index="{{index}}" data-neg="0"
+            bindtap="setSign"
+          >+</view>
+          <view
+            class="sign-btn {{item.neg ? 'on' : ''}}"
+            hover-class="h-press-lite"
+            data-index="{{index}}" data-neg="1"
+            bindtap="setSign"
+          >−</view>
+        </view>
+      </view>
+
+      <view class="field-row">
+        <view
+          class="step-btn press"
+          hover-class="h-press-lite"
+          data-index="{{index}}" data-dir="-1"
+          catchtap="step"
+        >−</view>
+        <view class="field-value">
+          <text class="val-sign" wx:if="{{item.signed && item.neg}}">−</text>
+          <input
+            class="num-input"
+            type="digit"
+            value="{{item.str}}"
+            placeholder="0"
+            data-index="{{index}}"
+            bindinput="onInput"
+          />
+        </view>
+        <view
+          class="step-btn press"
+          hover-class="h-press-lite"
+          data-index="{{index}}" data-dir="1"
+          catchtap="step"
+        >＋</view>
+        <view class="field-unit">{{item.unit}}</view>
+      </view>
+
+      <!-- 单位切换 -->
+      <view class="u-seg" wx:if="{{item.unitOptions}}">
+        <view
+          wx:for="{{item.unitOptions}}" wx:for-item="u" wx:for-index="ui" wx:key="label"
+          class="u-item {{item.unitSel === ui ? 'on' : ''}}"
+          hover-class="h-press-lite"
+          data-index="{{index}}" data-oi="{{ui}}"
+          bindtap="setUnit"
+        >{{u.label}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 结果 -->
+  <view class="sec-head">
+    <view class="sec-title">计算结果</view>
+    <view class="sec-more press" hover-class="h-press-lite" bindtap="copyResult">复制结果</view>
+  </view>
+
+  <view class="card res-card {{flash ? 'flash' : ''}}">
+    <block wx:for="{{result.items}}" wx:key="label">
+      <view wx:if="{{item.primary}}" class="res-main">
+        <view class="res-main-label">{{item.label}}</view>
+        <view class="res-main-val math">
+          {{item.val}}<text class="res-main-unit" wx:if="{{item.unit}}"> {{item.unit}}</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{result.items.length}}" class="res-rows">
+      <view wx:for="{{result.items}}" wx:key="label" wx:if="{{!item.primary}}" class="res-row">
+        <view class="res-row-label">{{item.label}}</view>
+        <view class="res-row-val">
+          <view class="swatch" wx:if="{{item.swatch}}" style="background:{{item.swatch}}"></view>
+          <text class="math">{{item.val}}</text>
+          <text class="res-unit" wx:if="{{item.unit}}">{{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="res-empty" wx:if="{{!result.items.length}}">输入参数后可查看结果</view>
+
+    <view class="warn-bar" wx:if="{{result.warning}}">
+      <view class="warn-dot"></view>
+      <text>{{result.warning}}</text>
+    </view>
+
+    <view class="notes" wx:if="{{result.notes.length}}">
+      <view wx:for="{{result.notes}}" wx:key="index" class="note-item">· {{item}}</view>
+    </view>
+  </view>
+
+  <view class="foot">OPTILAB · 结果保留 3-5 位有效数字</view>
+</view>
+</scroll-view>

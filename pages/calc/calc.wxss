@@ -1,0 +1,325 @@
+/* ========== 计算器页 ========== */
+.page {
+  padding: 8rpx 24rpx calc(40rpx + env(safe-area-inset-bottom));
+}
+
+/* ---------- 头部 ---------- */
+.head-card {
+  margin-top: 8rpx;
+  background: linear-gradient(160deg, #ffffff 0%, #f4f8ff 100%);
+  border: 1rpx solid var(--line);
+  border-radius: 32rpx;
+  padding: 30rpx;
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.55s ease both;
+}
+.hc-top {
+  display: flex;
+  align-items: center;
+}
+.hc-tile {
+  width: 92rpx;
+  height: 92rpx;
+  font-size: 36rpx;
+  border-radius: 26rpx;
+}
+.hc-mid {
+  margin-left: 22rpx;
+  min-width: 0;
+}
+.hc-name {
+  font-size: 38rpx;
+  font-weight: 800;
+}
+.hc-cat {
+  font-size: 22rpx;
+  color: var(--ink3);
+  margin-top: 4rpx;
+}
+.hc-desc {
+  margin-top: 20rpx;
+  font-size: 25rpx;
+  color: var(--ink2);
+}
+
+.formula-card {
+  margin-top: 22rpx;
+  background: #f4f6fe;
+  border-radius: 22rpx;
+  padding: 22rpx 24rpx;
+  border-left: 6rpx solid transparent;
+  border-image: linear-gradient(180deg, var(--brand), var(--brand2)) 1;
+}
+.f-title {
+  font-size: 20rpx;
+  color: var(--ink3);
+  letter-spacing: 3rpx;
+  font-weight: 700;
+}
+.f-line {
+  margin-top: 8rpx;
+  font-size: 29rpx;
+  color: var(--ink);
+  font-style: italic;
+  letter-spacing: 1rpx;
+}
+.f-note {
+  margin-top: 10rpx;
+  font-size: 21rpx;
+  color: var(--ink3);
+  border-top: 1rpx dashed var(--line);
+  padding-top: 10rpx;
+}
+
+/* 预设 */
+.preset-chips {
+  margin-top: -10rpx;
+}
+
+/* ---------- 输入 ---------- */
+.sec-head {
+  margin-top: 36rpx;
+}
+.inputs {
+  padding: 6rpx 28rpx;
+  overflow: hidden;
+}
+.field {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+.field:last-child {
+  border-bottom: none;
+}
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14rpx;
+}
+.field-label {
+  font-size: 25rpx;
+  color: var(--ink2);
+  font-weight: 600;
+}
+.sign-seg {
+  display: flex;
+  background: #eef1fb;
+  border-radius: 999rpx;
+  padding: 3rpx;
+}
+.sign-btn {
+  width: 52rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--ink3);
+  border-radius: 999rpx;
+  transition: all 0.2s ease;
+}
+.sign-btn.on {
+  background: var(--grad);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4rpx 10rpx rgba(61, 99, 255, 0.3);
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+}
+.step-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 18rpx;
+  background: #f1f4fd;
+  color: var(--brand);
+  font-size: 38rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+  flex: none;
+}
+.field-value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 14rpx;
+  background: #f7f9ff;
+  border: 2rpx solid transparent;
+  border-radius: 18rpx;
+  padding: 0 6rpx;
+  min-height: 64rpx;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.field-value:focus-within {
+  border-color: var(--brand);
+  background: #fff;
+}
+.val-sign {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--ink);
+  margin-left: 16rpx;
+}
+.num-input {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 14rpx 16rpx;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.field-unit {
+  width: 120rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: var(--ink3);
+  flex: none;
+}
+
+.u-seg {
+  display: flex;
+  margin-top: 12rpx;
+}
+.u-item {
+  font-size: 22rpx;
+  color: var(--ink2);
+  background: #f1f4fd;
+  border-radius: 999rpx;
+  padding: 6rpx 24rpx;
+  margin-right: 14rpx;
+  transition: all 0.2s ease;
+}
+.u-item.on {
+  background: rgba(61, 99, 255, 0.12);
+  color: var(--brand);
+  font-weight: 700;
+}
+
+/* ---------- 结果 ---------- */
+.res-card {
+  padding: 0;
+  overflow: hidden;
+}
+.res-card.flash {
+  animation: resultFlash 0.55s ease;
+}
+.res-main {
+  background: linear-gradient(135deg, #2f4fe0 0%, #2f86f2 60%, #17a9d8 100%);
+  padding: 30rpx 34rpx 34rpx;
+  color: #fff;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+.res-main::after {
+  content: '';
+  position: absolute;
+  right: -50rpx;
+  top: -60rpx;
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 70%);
+}
+.res-main-label {
+  font-size: 22rpx;
+  opacity: 0.9;
+  letter-spacing: 1rpx;
+}
+.res-main-val {
+  margin-top: 8rpx;
+  font-size: 72rpx;
+  font-weight: 800;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+  word-break: break-all;
+}
+.res-main-unit {
+  font-size: 28rpx;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.res-rows {
+  padding: 10rpx 30rpx;
+}
+.res-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+.res-row:last-child {
+  border-bottom: none;
+}
+.res-row-label {
+  font-size: 25rpx;
+  color: var(--ink2);
+}
+.res-row-val {
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--ink);
+  max-width: 60%;
+}
+.res-unit {
+  font-size: 22rpx;
+  color: var(--ink3);
+  font-weight: 400;
+  margin-left: 6rpx;
+}
+.swatch {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+  margin-right: 12rpx;
+  box-shadow: 0 0 0 4rpx rgba(0, 0, 0, 0.04);
+  flex: none;
+}
+.res-empty {
+  padding: 40rpx 30rpx;
+  text-align: center;
+  color: var(--ink3);
+  font-size: 24rpx;
+}
+
+.warn-bar {
+  margin: 20rpx 26rpx;
+  display: flex;
+  align-items: flex-start;
+  background: #fff3e6;
+  border: 1rpx solid rgba(245, 159, 0, 0.35);
+  border-radius: 18rpx;
+  padding: 18rpx 22rpx;
+  font-size: 24rpx;
+  color: #9a5b00;
+  animation: softPulse 2.4s ease-in-out infinite;
+}
+.warn-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: var(--warn);
+  margin: 10rpx 14rpx 0 0;
+  flex: none;
+  animation: softPulse 1.6s ease-in-out infinite;
+}
+
+.notes {
+  padding: 6rpx 30rpx 28rpx;
+}
+.note-item {
+  font-size: 23rpx;
+  color: var(--ink3);
+  margin-top: 8rpx;
+  line-height: 1.6;
+}

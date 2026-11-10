@@ -1,0 +1,68 @@
+<navigation-bar title="光学手册" back="{{true}}" color="#15244e" background="#eef3fc"></navigation-bar>
+<scroll-view class="body" scroll-y enhanced show-scrollbar="{{false}}">
+<view class="page">
+  <!-- 搜索 -->
+  <view class="search-box">
+    <text class="search-ico"></text>
+    <input
+      class="search-input"
+      placeholder="搜索词条，如：阿贝数 / 激光 / NA"
+      placeholder-class="search-ph"
+      value="{{keyword}}"
+      confirm-type="search"
+      bindinput="onInput"
+    />
+    <view class="search-clear" wx:if="{{keyword}}" hover-class="h-press-lite" bindtap="clearSearch">×</view>
+  </view>
+
+  <!-- 分类 -->
+  <scroll-view class="cat-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="cat-row">
+      <view
+        wx:for="{{chips}}" wx:key="id"
+        class="cat-chip press {{active === item.id ? 'on' : ''}}"
+        hover-class="h-press-lite"
+        data-id="{{item.id}}"
+        bindtap="setCat"
+      >{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{empty}}">
+    <view class="empty-orb"></view>
+    <view class="empty-txt">没有找到匹配的词条</view>
+  </view>
+
+  <!-- 词条列表 -->
+  <view wx:for="{{groups}}" wx:key="id" class="group">
+    <view class="group-head">
+      <view class="gh-tile" style="background:{{item.bg}}">{{item.icon}}</view>
+      <view class="gh-mid">
+        <view class="gh-name">{{item.name}}</view>
+        <view class="gh-count">{{item.entries.length}} 个词条</view>
+      </view>
+    </view>
+
+    <view
+      wx:for="{{item.entries}}" wx:for-item="en" wx:for-index="ei" wx:key="key"
+      class="entry-card press"
+      style="--d:{{en.delay}}ms"
+      hover-class="h-press"
+      data-key="{{en.key}}"
+      bindtap="openEntry"
+    >
+      <view class="ec-top">
+        <view class="ec-title">{{en.title}}</view>
+        <view class="ec-arrow">›</view>
+      </view>
+      <view class="ec-sum">{{en.summary}}</view>
+      <view class="ec-tag-row">
+        <view class="ec-tag">{{en.tag}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot">OPTILAB · 光学手册</view>
+</view>
+</scroll-view>

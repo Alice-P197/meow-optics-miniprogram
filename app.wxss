@@ -1,0 +1,208 @@
+/**app.wxss 全局样式与设计变量**/
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  --bg: #eef3fc;
+  --card: #ffffff;
+  --ink: #15244e;
+  --ink2: #46557f;
+  --ink3: #8a95b7;
+  --line: rgba(25, 55, 140, 0.10);
+  --brand: #3d63ff;
+  --brand2: #1aa9d8;
+  --grad: linear-gradient(135deg, #4d66ff 0%, #2f8cf2 55%, #1bb6d8 100%);
+  --danger: #e5484d;
+  --warn: #f59f00;
+  --ok: #12a594;
+  --radius: 28rpx;
+  --shadow: 0 10rpx 32rpx rgba(30, 62, 150, 0.12);
+  --shadow-sm: 0 4rpx 14rpx rgba(30, 62, 150, 0.08);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 28rpx;
+  line-height: 1.65;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+view, text, scroll-view, input, button, image {
+  box-sizing: border-box;
+}
+
+/* ---------- 通用组件 ---------- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.press {
+  transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.25s ease;
+}
+.h-press {
+  opacity: 0.94;
+  transform: scale(0.975);
+}
+.h-press-lite {
+  opacity: 0.65;
+}
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 40rpx 6rpx 22rpx;
+}
+.sec-title {
+  display: flex;
+  align-items: center;
+  font-size: 34rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+.sec-title::before {
+  content: '';
+  width: 8rpx;
+  height: 32rpx;
+  border-radius: 8rpx;
+  background: var(--grad);
+  margin-right: 16rpx;
+}
+.sec-more {
+  font-size: 24rpx;
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+}
+.sec-more::after {
+  content: '›';
+  font-size: 30rpx;
+  margin-left: 4rpx;
+  transform: translateY(-1rpx);
+}
+
+/* 标签chip */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+}
+.chip {
+  padding: 10rpx 26rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  color: var(--ink2);
+  background: rgba(61, 99, 255, 0.07);
+  margin: 0 14rpx 14rpx 0;
+  border: 1rpx solid transparent;
+  transition: all 0.22s ease;
+}
+.chip-on {
+  background: var(--grad);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 6rpx 16rpx rgba(61, 99, 255, 0.32);
+}
+
+/* 符号小方砖 */
+.tile {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 700;
+  font-family: Georgia, 'Times New Roman', serif;
+  box-shadow: 0 8rpx 18rpx rgba(40, 70, 170, 0.25);
+  flex: none;
+}
+
+/* 徽标 pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
+  background: rgba(61, 99, 255, 0.1);
+  color: var(--brand);
+  font-weight: 600;
+}
+
+/* ---------- 动画 ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate3d(0, 30rpx, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.86); }
+  70%  { transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-22rpx) scale(1.05); }
+}
+@keyframes ring {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes softPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+@keyframes resultFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(61, 99, 255, 0); }
+  35%  { box-shadow: 0 0 0 14rpx rgba(61, 99, 255, 0.16); }
+  100% { box-shadow: 0 0 0 0 rgba(61, 99, 255, 0); }
+}
+@keyframes ripple {
+  0%   { transform: scale(0.9); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.a-up {
+  animation: fadeUp 0.55s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
+}
+.a-pop {
+  animation: popIn 0.5s cubic-bezier(0.2, 0.85, 0.3, 1.2) both;
+  animation-delay: var(--d, 0s);
+}
+
+/* 表单公式字体 */
+.math {
+  font-family: Georgia, 'Times New Roman', 'Songti SC', serif;
+}
+.mono {
+  font-family: 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
+}
+
+/* 页脚 */
+.foot {
+  text-align: center;
+  color: var(--ink3);
+  font-size: 22rpx;
+  padding: 30rpx 0 10rpx;
+  letter-spacing: 2rpx;
+}
+
+/* 页面滚动区（顶部导航固定，内容滚动） */
+.body {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+/* 视口入场（父级 .go 触发子级 .rv 交错入场） */
+.rbox .rv {
+  opacity: 0;
+}
+.rbox.go .rv {
+  animation: fadeUp 0.6s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+  animation-delay: var(--d, 0s);
+}

@@ -1,0 +1,184 @@
+<!-- components/assistant-drawer/assistant-drawer.wxml -->
+<view class="adw-root {{(phase === 'enter' || phase === 'shown') ? 'open' : ''}}" wx:if="{{phase !== 'hidden'}}">
+  <!-- 半透明背景遮罩（点击关闭） -->
+  <view class="adw-backdrop" bindtap="onMaskTap" catchtouchmove="onStop"></view>
+
+  <!-- 抽屉主面板：从顶部下滑（支持下拉手势关闭） -->
+  <view
+    class="adw-panel {{dragging ? 'dragging' : ''}} {{kbd ? 'kbd' : ''}}"
+    style="{{dragY ? 'transform: translateY(' + dragY + 'px);' : ''}}"
+  >
+    <!-- 抽屉头部（下拉拖拽关闭） -->
+    <view class="adw-head"
+      bindtouchstart="onHeadTouchStart"
+      catchtouchmove="onHeadTouchMove"
+      bindtouchend="onHeadTouchEnd"
+      bindtouchcancel="onHeadTouchEnd"
+    >
+      <view class="adw-head-left">
+        <view class="adw-avatar">
+          <image class="adw-avatar-img" src="/assets/cat-assistant.png" mode="aspectFill" />
+        </view>
+        <view class="adw-title">
+          <view class="adw-name">小喵助手</view>
+          <view class="adw-state"><view class="adw-state-dot"></view>本地 · 离线可用</view>
+        </view>
+      </view>
+      <view class="adw-head-right">
+        <view class="adw-icon-btn press" hover-class="h-press-lite" bindtap="onClear" hover-stop-propagation="true">清空</view>
+        <view class="adw-icon-btn adw-close press" hover-class="h-press-lite" bindtap="onCloseTap" hover-stop-propagation="true">✕</view>
+      </view>
+    </view>
+
+    <!-- 消息流 -->
+    <scroll-view
+      id="msg-scroll"
+      class="adw-stream"
+      scroll-y enhanced show-scrollbar="{{false}}"
+      scroll-top="{{scrollTop}}"
+      scroll-with-animation="{{true}}"
+      bindscroll="onStreamScroll"
+    >
+      <view class="adw-stream-inner">
+
+        <block wx:for="{{messages}}" wx:key="id">
+          <view class="msg msg-u" wx:if="{{item.role === 'u'}}">
+            <view class="msg-text">{{item.text}}</view>
+          </view>
+
+          <view class="msg msg-ai" wx:else>
+            <view class="avatar">
+              <image class="avatar-img" src="/assets/cat-assistant.png" mode="aspectFill" />
+            </view>
+            <view class="ai-body">
+              <view class="ai-tool" wx:if="{{item.tool}}">{{item.tool}}</view>
+
+              <view class="ai-text">
+                <block wx:for="{{item.textArr || []}}" wx:for-item="seg" wx:key="idx">
+                  <block wx:if="{{seg.bold}}">
+                    <text class="ai-bold">{{seg.text}}</text>
+                  </block>
+                  <block wx:else>
+                    <text>{{seg.text}}</text>
+                  </block>
+                </block>
+              </view>
+
+              <block wx:for="{{item.cards}}" wx:for-item="card" wx:key="title">
+                <view
+                  wx:if="{{card.kind === 'calc'}}"
+                  class="card card-calc press {{card.primary ? 'card-primary' : ''}}"
+                  hover-class="h-press"
+                  data-kind="calc" data-id="{{card.id}}"
+                  data-payload="{{card.payload}}"
+                  bindtap="onCardTap"
+                >
+                  <view class="card-icon" style="background:{{card.grad || 'linear-gradient(135deg,#3d63ff,#1aa9d8)'}}">{{card.symbol || '📐'}}</view>
+                  <view class="card-mid">
+                    <view class="card-title">{{card.title}}</view>
+                    <view class="card-sub">{{card.sub}}</view>
+                    <block wx:for="{{card.lines}}" wx:for-item="ln" wx:key="*this">
+                      <view class="card-line">· {{ln}}</view>
+                    </block>
+                  </view>
+                  <view class="card-go">查看 ›</view>
+                </view>
+
+                <view
+                  wx:elif="{{card.kind === 'entry'}}"
+                  class="card card-entry press"
+                  hover-class="h-press"
+                  data-kind="entry" data-id="{{card.id}}"
+                  bindtap="onCardTap"
+                >
+                  <view class="card-icon card-icon-entry">📖</view>
+                  <view class="card-mid">
+                    <view class="card-title">{{card.title}}</view>
+                    <view class="card-sub" style="color:{{card.catColor}};">{{card.sub}}</view>
+                    <block wx:for="{{card.lines}}" wx:for-item="ln" wx:key="*this">
+                      <view class="card-line">· {{ln}}</view>
+                    </block>
+                  </view>
+                  <view class="card-go">打开 ›</view>
+                </view>
+
+                <view
+                  wx:elif="{{card.kind === 'sys'}}"
+                  class="card card-sys {{card.muted ? 'card-muted' : ''}}"
+                >
+                  <view class="card-title">{{card.title}}</view>
+                  <block wx:for="{{card.lines}}" wx:for-item="ln" wx:key="*this">
+                    <view class="card-line">{{ln}}</view>
+                  </block>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+
+        <view class="msg msg-ai" wx:if="{{typing}}">
+          <view class="avatar">
+            <image class="avatar-img" src="/assets/cat-assistant.png" mode="aspectFill" />
+          </view>
+          <view class="ai-body">
+            <view class="typing">
+              <view class="dot"></view>
+              <view class="dot"></view>
+              <view class="dot"></view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 推荐（首次对话时展示；推荐词可横向滑动） -->
+        <view class="promote" wx:if="{{messages.length <= 2}}">
+          <view class="promote-title">试试问我（左右滑动 ↔）</view>
+          <scroll-view class="promote-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+            <view class="promote-grid">
+              <view
+                wx:for="{{promoted}}" wx:key="*this"
+                class="promote-chip press" hover-class="h-press-lite"
+                data-q="{{item}}" bindtap="onPromptTap"
+              >{{item}}</view>
+            </view>
+          </scroll-view>
+
+          <view class="promote-title">常用计算器</view>
+          <view class="calcs">
+            <view
+              wx:for="{{calcs}}" wx:key="id"
+              class="calc-pill press" hover-class="h-press-lite"
+              data-id="{{item.id}}" bindtap="onCalcTap"
+            >
+              <text class="calc-pill-ic" style="background:{{item.grad}}">{{item.symbol}}</text>
+              <text class="calc-pill-nm">{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="stream-foot">— OPTILAB · 掌上光学工具箱 —</view>
+      </view>
+    </scroll-view>
+
+    <!-- 回到底部 -->
+    <view class="adw-tobot {{showToBot ? 'on' : ''}}" hover-class="h-press-lite" bindtap="onToBottom">↓</view>
+
+    <!-- 输入栏 -->
+    <view class="adw-composer" catchtouchmove="onStop">
+      <view class="adw-composer-inner">
+        <input
+          class="adw-composer-input"
+          type="text" confirm-type="send"
+          value="{{input}}"
+          bindinput="onInput"
+          bind:focus="onFocus"
+          bind:blur="onBlur"
+          bindconfirm="onTapSend"
+          placeholder="问：什么是菲涅尔数 / 输入数字即可算"
+          hold-keyboard="{{true}}"
+          cursor-spacing="20"
+        />
+        <view class="adw-composer-send {{input ? 'on' : ''}}" bindtap="onTapSend">发送</view>
+      </view>
+    </view>
+  </view>
+</view>
